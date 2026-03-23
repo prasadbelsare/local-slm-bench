@@ -1,17 +1,10 @@
 import httpx
 import time
 from api.schemas import GenerateResponse, ErrorResponse
-
-OLLAMA_BASE_URL = "http://localhost:11434"
-
-AVAILABLE_MODELS = [
-    "tinyllama:1.1b",
-    "phi3:mini",
-    "mistral:7b-instruct-q4_0"
-]
+from api.config import OLLAMA_BASE_URL
+from api.constants import AVAILABLE_MODELS
 
 async def generate(prompt: str, model: str) -> GenerateResponse | ErrorResponse:
-    # Guard: reject unknown models immediately
     if model not in AVAILABLE_MODELS:
         return ErrorResponse(
             error=f"Model '{model}' is not available. Choose from: {AVAILABLE_MODELS}",

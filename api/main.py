@@ -1,7 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from api.schemas import GenerateRequest, GenerateResponse, ErrorResponse
+from api.schemas import StructuredGenerateRequest, StructuredGenerateResponse
 from api.ollama_client import generate
+from api.structured_client import structured_generate
+from api.config import FRONTEND_URL
+from api.constants import AVAILABLE_MODELS
 
 app = FastAPI(
     title="Local SLM Benchmark API",
@@ -9,10 +13,9 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# CORS - allows React frontend to talk to this API
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React dev server
+    allow_origins=[FRONTEND_URL],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -38,8 +41,18 @@ async def generate_response(request: GenerateRequest):
         prompt=request.prompt,
         model=request.model
     )
-
     if isinstance(result, ErrorResponse):
         raise HTTPException(status_code=500, detail=result.error)
+    return result
 
+@app.post("/structured-generate", response_model=StructuredGenerateResponse)
+async def structured_generate_response(request: StructuredGenerateRequest):
+    result = await structured_generate(
+        prompt=request.prompt,
+        model=request.model,
+        output_type=request.output_type,
+        temperature=request.temperature
+    )
+    if isinstance(result, ErrorResponse):
+        raise HTTPException(status_code=500, detail=result.error)
     return result
