@@ -125,7 +125,7 @@ local-slm-bench/
 │
 ├── streamlit_app.py             # Frontend — chat, charts, comparison
 ├── FINDINGS.md                  # Full benchmark analysis
-├── .env                         # Environment variables (not committed)
+├── .env                         # Environment variables
 └── requirements.txt
 ```
 
