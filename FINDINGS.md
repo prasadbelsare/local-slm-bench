@@ -1,6 +1,7 @@
 # Benchmark Findings — Local SLM Project
 
 I ran three models on my CPU-only laptop (16GB RAM, no GPU) using Ollama.
+Total runs: 120 (3 models × 40 prompts across 8 real-world categories).
 Here's what I actually found, including the stuff that surprised me.
 
 ---
@@ -9,210 +10,290 @@ Here's what I actually found, including the stuff that surprised me.
 
 - Machine: CPU only, 16GB RAM, Windows
 - Ollama: v0.18.0
-- Models tested: tinyllama:1.1b, phi3:mini, mistral:7b-instruct-q4_0
-- Test suite: 9 prompts across summarization, reasoning, and code generation
+- Models: tinyllama:1.1b, phi3:mini, mistral:7b-instruct-q4_0
+- Prompt suite: 40 prompts across healthcare, legal, finance, code,
+  education, marketing, HR, and customer support
 
 ---
 
 ## Speed Results
 
-| Model | Avg tokens/sec | Avg latency |
-|---|---|---|
-| tinyllama:1.1b | 14.87 tok/s | ~14s |
-| phi3:mini | 4.91 tok/s | ~37s |
-| mistral:7b-instruct-q4_0 | 2.43 tok/s | ~43s |
+| Model | Avg tok/s | Avg time to first token | Avg total latency |
+|---|---|---|---|
+| tinyllama:1.1b | 19.4 | 1.1s | ~18s |
+| phi3:mini | 5.9 | 2.9s | ~80s |
+| mistral:7b-instruct-q4_0 | 3.4 | 5.2s | ~80s |
 
-Tinyllama is roughly 3x faster than phi3 and 6x faster than mistral.
-That gap sounds impressive until you look at what tinyllama actually says.
+Tinyllama is roughly 3x faster than phi3 and 5x faster than mistral
+in tokens per second. More importantly, its time to first token (1.1s)
+is significantly better than phi3 (2.9s) and mistral (5.2s). For a
+streaming chat interface, time to first token matters more than total
+latency because it determines how quickly the user sees a response starting.
 
 ---
 
-## Quality Results — Where It Gets Interesting
+## Memory Usage
 
-### Reasoning tasks
+Measured by tracking Ollama's process RSS across all child processes.
 
-I gave all three models the same three reasoning prompts. Results were stark.
+| Model | RAM on first load | Stable footprint |
+|---|---|---|
+| tinyllama:1.1b | +708MB | ~730MB |
+| phi3:mini | +3.6GB | ~4.4GB |
+| mistral:7b-instruct-q4_0 | ~4.5GB total | ~4.5GB |
 
-**Trick question:** "A farmer has 17 sheep. All but 9 die. How many left?"
-- tinyllama: said "9 sheep left" then immediately said "18 (9+9)" in the
-  same response. Contradicted itself.
-- phi3: 9. Explained the "all but" phrasing correctly.
-- mistral: 9. Clean, clear explanation.
+Loading phi3 pushed system RAM from 68% to 88% on a 16GB machine.
+Ollama evicts the previous model before loading the next one, so
+switching between models has a cold-start penalty of 20-60 seconds.
+Only one large model fits in memory at a time. On an 8GB machine,
+only tinyllama would be viable from this set.
 
-**Math:** "Train travels 60km in 30 min, how far in 2 hours?"
-- tinyllama: answered 5.2km. Completely wrong. Showed pages of broken working.
-- phi3: 240km. Correct.
-- mistral: 120km. Wrong — calculated the speed correctly (120km/h) but
-  returned it as the distance instead of multiplying by 2. One step short.
+---
 
-Tinyllama failed every reasoning test. It wasn't close — it was confidently
-wrong, which is worse than saying "I don't know."
+## Quality Findings by Category
 
-### The French response
+### Healthcare
 
-On one prompt, tinyllama responded entirely in French. The prompt was in
-English. I didn't ask for French. It just did it.
+All three models gave reasonable responses to basic medical questions.
+The big difference was response discipline.
 
-That's 1 out of 9 prompts failing on something as basic as language
-consistency. In a real product that would be a support ticket and a
-confused user. I wouldn't have caught this without running a proper
-test suite.
+Tinyllama on the stroke warning signs prompt gave 12 numbered steps
+including "get your Medicare card" and "call the nearest hospital in
+advance if travelling by train." These are not stroke emergency steps.
+The content was padded and off-topic.
 
-### Code generation
+Phi3 on the chest pain prompt generated a 35,476 character response
+taking 37 minutes to complete. It went from listing 16 possible
+conditions to writing 25 steps, then inventing follow-up questions
+and answering those too. This is a critical production risk — phi3
+has no natural stopping point on open-ended clinical prompts and
+would need strict output length limits in any real deployment.
 
-All three models wrote working Python for simple tasks. Mistral wrote
-the cleanest code with the best comments. Phi3 was decent but had some
-hallucinated variable names in one response. Tinyllama was verbose and
-over-engineered simple functions.
+Mistral gave the most clinically appropriate responses. Concise,
+structured, accurate. The chest pain response listed 5 relevant
+conditions with clear immediate steps. No padding.
+
+### Legal
+
+Mistral was the clear winner here. GDPR summary, NDA vs NCA comparison,
+GPL licensing implications — all were accurate, well-structured, and
+appropriately concise.
+
+Phi3 tended to over-explain, sometimes generating essay-length responses
+to simple questions. The GDPR response ran to 11,317 characters and
+included invented follow-up questions with answers. The civil vs criminal
+law response went to 7,411 characters for a question that needed maybe 300.
+
+Tinyllama on the GPL licensing question generated what looked like a
+legal contract template rather than an explanation of the implications.
+It invented clause numbers and legal language that had nothing to do
+with the actual question.
+
+### Finance
+
+This category revealed a consistent math error in mistral.
+
+The gross profit / operating profit calculation:
+- Correct answer: gross profit = $300,000, operating profit = $150,000
+- Phi3: correct
+- Tinyllama: wrong — got $966,000 gross profit through broken arithmetic
+- Mistral: wrong — included operating expenses in cost of sales before
+  computing gross profit, giving $150,000 gross and $0 operating profit
+
+Phi3 was the only model that got this right. For any finance application
+where numerical accuracy matters, phi3 outperformed mistral on this test.
+
+### Code
+
+Simple code tasks (average function, palindrome check, CSV reader) all
+three models handled reasonably well. The differences showed on more
+complex prompts.
+
+Phi3 on the top-3-highest-paid-employees function responded in JavaScript
+despite being asked for Python. It also introduced undefined variables
+and syntax errors. This was the only time any model switched languages
+without being asked.
+
+Tinyllama's code was often functional but over-engineered. The average
+function included a try/except block and sample usage that exceeded the
+question. For quick code generation tasks this verbosity is a problem.
+
+Mistral consistently wrote the cleanest Python — correct logic, good
+variable names, appropriate comments, proper edge case handling. The
+palindrome function was the best of the three: removes non-alphanumeric
+characters, lowercases, checks reverse. One function, no extras.
+
+### Education
+
+The Pythagorean theorem prompt produced the biggest hallucination of
+the entire benchmark.
+
+Tinyllama responded by inventing a fictional AI program called
+"PythaGoreaN" and explaining how it uses machine learning to predict
+outcomes. There was no mention of triangles, geometry, or the actual
+theorem anywhere in the 1,941 character response. This was a complete
+topic drift — the model recognized "Pythagorean" as an AI-adjacent word
+and went in that direction entirely.
+
+Phi3 and mistral both gave appropriate explanations with real-world
+examples. Mistral's was the most age-appropriate for a 12-year-old.
+
+### Marketing
+
+This was the category where tinyllama performed best relative to the
+others. Short creative tasks like product descriptions and Instagram
+captions were handled well at a fraction of the time.
+
+The Instagram pumpkin spice caption was revealing:
+- Tinyllama: just hashtags, no actual caption. 47 characters total.
+- Phi3: a proper caption with hashtags, 398 characters
+- Mistral: a good caption with appropriate emoji, 188 characters
+
+For marketing content that needs to be both creative and follow
+a format, tinyllama falls short even on simple tasks.
+
+### HR
+
+The feedback conversation script was interesting. All three models
+wrote reasonable dialogue but with different failure modes.
+
+Tinyllama wrote a 4,938 character script where the manager ends up
+agreeing to help the employee rather than holding the employee
+accountable for missing deadlines. The feedback conversation drifted
+into a project planning session.
+
+Phi3 wrote a respectful and realistic conversation but then appended
+a 2,000 character "documentary film company" version of the same
+scenario that was never asked for.
+
+Mistral wrote a short, direct, realistic script. Manager raises the
+issue, employee acknowledges it, they agree on a plan. 1,384 characters.
+No extras.
+
+### Customer Support
+
+The classification prompt (billing issue / technical problem / general
+inquiry) was the clearest quality difference across models.
+
+- Tinyllama: "Response: This is a billing issue. Please check your
+  invoice or contact our support team for assistance." — correct
+  classification, then broke format by writing a support response
+  instead of just classifying.
+- Phi3: classified correctly but then wrote a new, longer customer
+  message as an example, which was not asked for.
+- Mistral: "The message is classified as a billing issue." — exactly
+  what was asked. Nothing more.
+
+For structured classification tasks in production, mistral's ability
+to stop when the task is complete is a real advantage.
 
 ---
 
 ## Structured Output (JSON Schema Enforcement)
 
 I built an endpoint that forces models to return structured JSON instead
-of free text. This is important for real applications where you need to
-parse and use the model's output programmatically.
-
-**What happened:**
-
-tinyllama ignored the system prompt completely on the first attempt.
-It just answered normally like there was no instruction. I had to embed
-the JSON format directly inside the prompt itself to get any response
-at all. Even then, it copied my example JSON template word for word
-instead of filling in real content:
-```json
-{
-  "summary": "Your summary here",
-  "key_points": ["Point 1", "Point 2"],
-  "word_count": 10
-}
-```
-
-That's not a structured output — that's a copy-paste.
-
-phi3 and mistral both returned valid, real JSON on the first attempt:
-```json
-{
-  "summary": "Machine learning is a subset of AI that uses algorithms
-               to enable computers to improve at tasks with experience.",
-  "key_points": ["Involves algorithms", "Statistical models",
-                 "Experience-based improvement"],
-  "word_count": 42
-}
-```
-
-**Retry mechanism:**
-I built a retry that catches invalid JSON and reprompts with stronger
-instructions at temperature 0. It worked — tinyllama's second attempt
-always returned valid JSON structure. The content was still wrong but
-the structure was valid. phi3 and mistral never needed the retry.
+of free text using Pydantic schemas and a retry mechanism.
 
 | Model | Valid JSON | Real content | Attempts |
 |---|---|---|---|
-| tinyllama | yes | no | 2 |
+| tinyllama | yes | no — copied template | 2 |
 | phi3:mini | yes | yes | 1 |
 | mistral:7b | yes | yes | 1 |
 
----
+Tinyllama produced valid JSON structure on attempt 2 but filled it with
+placeholder text from the prompt template. It pattern-matched the JSON
+without understanding the task.
 
-## Latency Reality Check
+Phi3 and mistral both returned accurate, real content on first attempt.
+The retry mechanism only fired for tinyllama across all structured
+output tests.
 
-Mistral took 65 seconds to respond to one prompt. On a chat interface
-that means a user stares at a spinner for over a minute. That's not
-a slow app — that's an unusable app for real-time use.
-
-The honest picture on CPU-only hardware:
-
-- tinyllama: fast enough for real-time but too unreliable to trust
-- phi3: 30-60 seconds — only viable for background/async tasks
-- mistral: 37-65 seconds — same, background only
-
-None of these are suitable for a real-time chat product on CPU.
-The right use case for this stack is batch processing, overnight
-document analysis, or internal tools where nobody is waiting on
-a spinner.
+One important finding: tinyllama completely ignored system prompt
+instructions for JSON formatting. The fix required embedding the JSON
+format directly into the user prompt itself. Models below roughly 3B
+parameters may not have enough capacity to simultaneously process task
+content and follow formatting constraints from a separate system prompt.
 
 ---
 
-## Privacy & Cost
+## Temperature Experiment (0.0 vs 0.7)
 
-### Privacy
-Everything runs locally. No prompt, no response, no user data leaves
-the machine. This is the whole point of the stack.
+Ran 5 prompts × 2 temperatures × 3 runs each across all models (90 calls).
 
-For a medical records tool, a legal document analyzer, or any system
-handling sensitive business data — you simply cannot send that data
-to OpenAI or Anthropic. This stack solves that problem, even if it
-trades speed to do it.
-
-### Cost
-Cloud APIs charge per token. At scale that adds up fast:
-- GPT-4o: ~$0.01-0.03 per 1K tokens
-- Local inference: $0 per token after setup
-
-For a high-volume internal tool processing thousands of documents
-per day, local inference pays for itself quickly.
-
----
-
-## What I'd Actually Use
-
-| Situation | My pick | Why |
-|---|---|---|
-| Need speed, task is simple | tinyllama | Fastest, acceptable for drafts |
-| Need structured JSON output | phi3:mini | Reliable, 2x faster than mistral |
-| Need accuracy, batch job | mistral:7b | Best quality, latency doesn't matter |
-| Privacy-sensitive data | any of them | Nothing leaves the machine |
-| Real-time chat product | none on CPU | Need GPU or cloud API |
-
----
-
-## What I'd Do Differently
-
-If I ran this again I would:
-1. Test on GPU hardware to separate model quality from hardware constraints
-2. Expand the prompt suite to 30+ prompts
-3. Measure actual RAM usage per model during inference
-4. Test quantization levels — Q4 vs Q5 vs Q8 on the same model
-
-The CPU constraint shaped every result here. The quality differences
-between models are real but the latency numbers would look very
-different on even a mid-range GPU.
-
-## Finding 7 — Temperature Experiment (0.0 vs 0.7)
-
-### Setup
-Ran 5 prompts × 2 temperatures × 3 runs each across all 3 models (90 total calls).
-Prompts: coffee shop tagline, explain gravity, describe blue, capital of France, motivational quote.
-
-### Results — deterministic prompts out of 5
-
-| Model | temp=0.0 | temp=0.7 |
+| Model | Deterministic at temp=0 | Deterministic at temp=0.7 |
 |---|---|---|
 | tinyllama | 0/5 | 0/5 |
 | phi3:mini | 0/5 | 1/5 |
 | mistral:7b | 1/5 | 1/5 |
 
-### Key findings
+Temperature 0 did not produce identical outputs on CPU. Only "what is
+the capital of France" was consistently identical across runs for phi3
+and mistral. Every creative prompt produced different responses every
+time regardless of temperature.
 
-**Temperature 0 did not produce identical outputs.**
-Every model varied across 3 runs even at temp=0 on most prompts.
-Only "capital of France" was consistently identical for phi3 and mistral.
-On CPU hardware, floating point non-determinism means you cannot
-rely on temp=0 for reproducible outputs the way you can on GPU.
+This appears to be CPU floating point non-determinism — tiny rounding
+differences in matrix operations produce different token probabilities
+each run. On GPU hardware this is less of an issue.
 
-**Prompt type matters more than temperature.**
-Factual prompts (capital of France) were stable at both temperatures.
-Creative prompts (taglines, quotes) produced 3 unique responses
-every single time regardless of temperature setting.
+The practical implication: on CPU-only deployments, you cannot rely on
+temperature 0 alone to get reproducible outputs. If reproducibility
+matters for your application, you would need to validate outputs or
+use a different approach entirely.
 
-**Tinyllama hallucinated fake quotes.**
-On the motivational quote prompt, tinyllama attributed quotes to
-Walt Disney and Steve Jobs that neither of them said. phi3 and
-mistral did not hallucinate citations. This is a different category
-of failure from formatting issues — it's factual unreliability.
+Tinyllama also hallucinated fake quotes attributed to Walt Disney and
+Steve Jobs on the motivational quote prompt. Neither phi3 nor mistral
+did this. Hallucinating citations is a different category of failure
+from formatting issues — it introduces false information presented
+as fact.
 
-**Practical implication.**
-For production systems requiring reproducible outputs, temp=0
-alone is not sufficient on CPU. You need either GPU hardware,
-or a validation layer that checks output consistency across runs.
+---
+
+## Time to First Token
+
+This metric matters more than total latency for streaming interfaces
+because it determines how quickly the user sees the first word.
+
+| Model | Avg TTFT across all categories |
+|---|---|
+| tinyllama:1.1b | 1.1s |
+| phi3:mini | 2.9s |
+| mistral:7b-instruct-q4_0 | 5.2s |
+
+Mistral's 5.2s average TTFT means users wait over 5 seconds before
+seeing anything on screen. Combined with its slow generation speed,
+mistral is not viable for any real-time interface on CPU hardware.
+
+Tinyllama's 1.1s TTFT is the only number in this benchmark that
+approaches something usable for a streaming chat interface.
+
+---
+
+## Privacy and Cost
+
+Everything runs locally. No prompt, no response, no user data leaves
+the machine. This is the core value of the stack.
+
+For medical, legal, or proprietary business data — you cannot send
+that to an external API. This stack solves that problem even if it
+trades latency to do so.
+
+On cost: cloud APIs charge per token. At scale that adds up quickly.
+GPT-4o runs roughly $0.01-0.03 per 1K tokens. Local inference costs
+nothing per token after hardware setup. For a high-volume internal
+document processing tool, local inference pays for itself fast.
+
+---
+
+## Summary — Which Model for What
+
+| Situation | Model | Reason |
+|---|---|---|
+| Need speed, simple task | tinyllama | 5x faster, acceptable for drafts |
+| Structured JSON output | phi3:mini | Reliable first-attempt compliance |
+| Math or numerical accuracy | phi3:mini | Only model that got finance_2 right |
+| Clean concise code | mistral:7b | Best instruction following, no extras |
+| Real-time chat interface | none on CPU | Need GPU or cloud API |
+| Privacy-sensitive batch work | mistral:7b | Best quality, latency acceptable async |
+| RAM-constrained deployment | tinyllama | Only 730MB loaded |
+
+---
