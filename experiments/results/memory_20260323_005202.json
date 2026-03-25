@@ -1,0 +1,100 @@
+{
+  "timestamp": "20260323_005202",
+  "system": {
+    "total_gb": 15.82,
+    "available_gb": 1.95,
+    "used_percent": 87.7
+  },
+  "results": [
+    {
+      "model": "tinyllama:1.1b",
+      "prompt": "Explain what artificial intelligence is in 3 sente...",
+      "duration_seconds": 6.69,
+      "ollama_ram_before_mb": 5.72,
+      "ollama_ram_after_mb": 5.72,
+      "ollama_ram_delta_mb": 0.0,
+      "system_ram_used_before_percent": 56.6,
+      "system_ram_used_after_percent": 61.9
+    },
+    {
+      "model": "tinyllama:1.1b",
+      "prompt": "Write a Python function that sorts a list of numbe...",
+      "duration_seconds": 19.18,
+      "ollama_ram_before_mb": 5.72,
+      "ollama_ram_after_mb": 5.72,
+      "ollama_ram_delta_mb": 0.0,
+      "system_ram_used_before_percent": 61.9,
+      "system_ram_used_after_percent": 63.2
+    },
+    {
+      "model": "tinyllama:1.1b",
+      "prompt": "Summarize the pros and cons of electric vehicles i...",
+      "duration_seconds": 19.39,
+      "ollama_ram_before_mb": 5.72,
+      "ollama_ram_after_mb": 5.72,
+      "ollama_ram_delta_mb": 0.0,
+      "system_ram_used_before_percent": 63.1,
+      "system_ram_used_after_percent": 61.9
+    },
+    {
+      "model": "phi3:mini",
+      "prompt": "Explain what artificial intelligence is in 3 sente...",
+      "duration_seconds": 22.73,
+      "ollama_ram_before_mb": 5.72,
+      "ollama_ram_after_mb": 5.05,
+      "ollama_ram_delta_mb": -0.67,
+      "system_ram_used_before_percent": 61.9,
+      "system_ram_used_after_percent": 84.7
+    },
+    {
+      "model": "phi3:mini",
+      "prompt": "Write a Python function that sorts a list of numbe...",
+      "duration_seconds": 20.87,
+      "ollama_ram_before_mb": 5.05,
+      "ollama_ram_after_mb": 5.05,
+      "ollama_ram_delta_mb": 0.0,
+      "system_ram_used_before_percent": 84.7,
+      "system_ram_used_after_percent": 84.6
+    },
+    {
+      "model": "phi3:mini",
+      "prompt": "Summarize the pros and cons of electric vehicles i...",
+      "duration_seconds": 64.81,
+      "ollama_ram_before_mb": 5.05,
+      "ollama_ram_after_mb": 5.05,
+      "ollama_ram_delta_mb": 0.0,
+      "system_ram_used_before_percent": 84.5,
+      "system_ram_used_after_percent": 87.3
+    },
+    {
+      "model": "mistral:7b-instruct-q4_0",
+      "prompt": "Explain what artificial intelligence is in 3 sente...",
+      "duration_seconds": 44.44,
+      "ollama_ram_before_mb": 5.05,
+      "ollama_ram_after_mb": 4.34,
+      "ollama_ram_delta_mb": -0.71,
+      "system_ram_used_before_percent": 87.3,
+      "system_ram_used_after_percent": 85.1
+    },
+    {
+      "model": "mistral:7b-instruct-q4_0",
+      "prompt": "Write a Python function that sorts a list of numbe...",
+      "duration_seconds": 38.72,
+      "ollama_ram_before_mb": 4.34,
+      "ollama_ram_after_mb": 4.34,
+      "ollama_ram_delta_mb": 0.0,
+      "system_ram_used_before_percent": 85.1,
+      "system_ram_used_after_percent": 87.4
+    },
+    {
+      "model": "mistral:7b-instruct-q4_0",
+      "prompt": "Summarize the pros and cons of electric vehicles i...",
+      "duration_seconds": 104.64,
+      "ollama_ram_before_mb": 4.34,
+      "ollama_ram_after_mb": 4.28,
+      "ollama_ram_delta_mb": -0.06,
+      "system_ram_used_before_percent": 87.5,
+      "system_ram_used_after_percent": 87.7
+    }
+  ]
+}

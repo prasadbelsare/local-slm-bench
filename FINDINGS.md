@@ -178,3 +178,41 @@ If I ran this again I would:
 The CPU constraint shaped every result here. The quality differences
 between models are real but the latency numbers would look very
 different on even a mid-range GPU.
+
+## Finding 7 — Temperature Experiment (0.0 vs 0.7)
+
+### Setup
+Ran 5 prompts × 2 temperatures × 3 runs each across all 3 models (90 total calls).
+Prompts: coffee shop tagline, explain gravity, describe blue, capital of France, motivational quote.
+
+### Results — deterministic prompts out of 5
+
+| Model | temp=0.0 | temp=0.7 |
+|---|---|---|
+| tinyllama | 0/5 | 0/5 |
+| phi3:mini | 0/5 | 1/5 |
+| mistral:7b | 1/5 | 1/5 |
+
+### Key findings
+
+**Temperature 0 did not produce identical outputs.**
+Every model varied across 3 runs even at temp=0 on most prompts.
+Only "capital of France" was consistently identical for phi3 and mistral.
+On CPU hardware, floating point non-determinism means you cannot
+rely on temp=0 for reproducible outputs the way you can on GPU.
+
+**Prompt type matters more than temperature.**
+Factual prompts (capital of France) were stable at both temperatures.
+Creative prompts (taglines, quotes) produced 3 unique responses
+every single time regardless of temperature setting.
+
+**Tinyllama hallucinated fake quotes.**
+On the motivational quote prompt, tinyllama attributed quotes to
+Walt Disney and Steve Jobs that neither of them said. phi3 and
+mistral did not hallucinate citations. This is a different category
+of failure from formatting issues — it's factual unreliability.
+
+**Practical implication.**
+For production systems requiring reproducible outputs, temp=0
+alone is not sufficient on CPU. You need either GPU hardware,
+or a validation layer that checks output consistency across runs.

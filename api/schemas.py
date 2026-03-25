@@ -3,19 +3,18 @@ from typing import Optional
 
 class GenerateRequest(BaseModel):
     prompt: str
-    model: str = "tinyllama:1.1b"  
-
+    model: str = "tinyllama:1.1b"
 
 class GenerateResponse(BaseModel):
     response: str
     model: str
     duration_seconds: float
+    time_to_first_token: Optional[float] = None
     prompt_used: str
 
 class ErrorResponse(BaseModel):
     error: str
     model: Optional[str] = None
-
 
 class SummaryOutput(BaseModel):
     summary: str
@@ -35,7 +34,7 @@ class CodeOutput(BaseModel):
 class StructuredGenerateRequest(BaseModel):
     prompt: str
     model: str = "tinyllama:1.1b"
-    output_type: str = "summary"  
+    output_type: str = "summary"
     temperature: float = 0.7
 
 class StructuredGenerateResponse(BaseModel):
@@ -43,4 +42,4 @@ class StructuredGenerateResponse(BaseModel):
     output_type: str
     model: str
     duration_seconds: float
-    attempts: int  
+    attempts: int

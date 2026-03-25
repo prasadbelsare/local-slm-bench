@@ -4,7 +4,11 @@ from api.schemas import GenerateResponse, ErrorResponse
 from api.config import OLLAMA_BASE_URL
 from api.constants import AVAILABLE_MODELS
 
-async def generate(prompt: str, model: str) -> GenerateResponse | ErrorResponse:
+async def generate(
+    prompt: str,
+    model: str
+) -> GenerateResponse | ErrorResponse:
+
     if model not in AVAILABLE_MODELS:
         return ErrorResponse(
             error=f"Model '{model}' is not available. Choose from: {AVAILABLE_MODELS}",
@@ -12,26 +16,48 @@ async def generate(prompt: str, model: str) -> GenerateResponse | ErrorResponse:
         )
 
     start_time = time.time()
+    first_token_time = None
+    full_response = ""
 
     try:
         async with httpx.AsyncClient(timeout=120.0) as client:
-            response = await client.post(
+            async with client.stream(
+                "POST",
                 f"{OLLAMA_BASE_URL}/api/generate",
                 json={
                     "model": model,
                     "prompt": prompt,
-                    "stream": False
+                    "stream": True
                 }
-            )
-            response.raise_for_status()
-            data = response.json()
+            ) as response:
+                response.raise_for_status()
 
-        duration = round(time.time() - start_time, 2)
+                async for line in response.aiter_lines():
+                    if not line.strip():
+                        continue
+
+                    import json
+                    chunk = json.loads(line)
+
+                    # Capture time when first token arrives
+                    if first_token_time is None and chunk.get("response"):
+                        first_token_time = time.time()
+
+                    full_response += chunk.get("response", "")
+
+                    # Stop when done
+                    if chunk.get("done", False):
+                        break
+
+        end_time = time.time()
+        total_duration = round(end_time - start_time, 2)
+        ttft = round(first_token_time - start_time, 2) if first_token_time else None
 
         return GenerateResponse(
-            response=data["response"],
+            response=full_response,
             model=model,
-            duration_seconds=duration,
+            duration_seconds=total_duration,
+            time_to_first_token=ttft,
             prompt_used=prompt
         )
 

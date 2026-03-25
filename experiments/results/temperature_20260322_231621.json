@@ -1,0 +1,392 @@
+[
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_1",
+    "prompt": "Write a one sentence tagline for a coffee shop.",
+    "temperature": 0.0,
+    "responses": [
+      "\"Escape the stress with a cup of joe.\"",
+      "\"Pour yourself into our cozy haven, where you'll find the perfect cup of joe.\"",
+      "\"A place where people come to meet, brew and connect.\""
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_2",
+    "prompt": "Explain what gravity is in one sentence.",
+    "temperature": 0.0,
+    "responses": [
+      "Gravity, also known as the force of attraction between two objects, is the tendency for objects to pull towards each other due to their mass and inertia. It is a fundamental principle in physics that describes how objects behave in Earth's gravitational field.",
+      "Gravity is the force that pulls objects to the Earth, or any other object that revolves around it. In one sentence, gravity can be defined as \"a force that holds an object to a planet, satellite, or other celestial body.\"",
+      "Gravity is the force that causes objects to pull towards each other, regardless of their mass or type of material. It's a fundamental property of space and matter, and it can be observed by studying the gravitational force between two massive bodies."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_3",
+    "prompt": "Write a one sentence description of the color blue.",
+    "temperature": 0.0,
+    "responses": [
+      "A calming, soothing shade with a mysterious and peaceful quality.",
+      "The color blue, representing peacefulness, calmness, and trustworthiness. It is associated with the heavens and the sky, as well as the deep sea and blue skies. Blue promotes mental focus and clarity, and it evokes feelings of serenity and well-being.",
+      "The color blue, often associated with calmness, tranquility, and royalty, is described as a deep, vibrant hue that evokes feelings of peace and introspection. It is typically used in paintings and works of art, particularly those depicting sea or sky, symbolizing the infinite expanse of the universe."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_4",
+    "prompt": "What is the capital of France? Answer in one sentence.",
+    "temperature": 0.0,
+    "responses": [
+      "The capital of France is Paris, located in the \u00cele-de-France region.",
+      "The capital of France is Paris, located in the Ile-de-France region.",
+      "France's capital city is Paris, located in the Ile-de-France region."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_5",
+    "prompt": "Write a one sentence motivational quote.",
+    "temperature": 0.0,
+    "responses": [
+      "#HavingFaithInYourAbility To create a One Sentence Motivational Quote that captures the essence of positivity and optimism, without being too wordy or overly generic: \"Remember that you have the power within you to create your own happiness, no matter what challenges life may throw at you.\"",
+      "\"Success is not about reaching goals; it's about taking the first step.\" - Walt Disney",
+      "\"Your efforts, no matter how small, count for a lot.\" - Steve Jobs"
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_1",
+    "prompt": "Write a one sentence tagline for a coffee shop.",
+    "temperature": 0.7,
+    "responses": [
+      "\"Brewed with care, served warm.\"",
+      "\"Cut to the chase, indulge in our expertly crafted brews and hearty cakes.\"",
+      "\"Join the coffee culture, brew up a storm with our scoop.\""
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_2",
+    "prompt": "Explain what gravity is in one sentence.",
+    "temperature": 0.7,
+    "responses": [
+      "Gravity is the force that pulls everything from Earth toward the center of the planet. It's a fundamental law of physics that governs the motion and behavior of objects in the universe. When something weighs less than an object it can be moved by gravity, while heavier objects are attracted to each other due to their mutual gravitational force.",
+      "Gravity is the force that pulls objects to the Earth or any other planet in our solar system, depending on their distance from it. The gravity felt by an object is dependent upon its mass and distance from the Earth. Gravity pulls inwards towards Earth, causing things to fall towards the surface of the planet.",
+      "Gravity is the attractive force between two objects due to their mutual gravitational pull. It is also known as the force of attraction, pull or draw, and can be expressed mathematically as:\n\nF = G * m1 * m2 / (r^2)"
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_3",
+    "prompt": "Write a one sentence description of the color blue.",
+    "temperature": 0.7,
+    "responses": [
+      "A deep, rich and calming shade that inspires feelings of calmness, trustworthiness, and security. With an ethereal blueness that lingers in the mind long after being seen. A symbol of the infinite and endless expanse of the universe itself.",
+      "A calming, ethereal hue that envelopes the soul and transports us to a peaceful state.",
+      "A calming, soothing shade that inspires tranquility and reflection."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_4",
+    "prompt": "What is the capital of France? Answer in one sentence.",
+    "temperature": 0.7,
+    "responses": [
+      "The capital of France is Paris, and it's named after King Charles I of England.",
+      "The capital of France is Paris.",
+      "The capital of France is Paris, located in Ile-de-France region. The capital city of France has been the seat of power for over a thousand years and continues to be one of the most significant political, cultural, and economic centers of Europe today."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "tinyllama:1.1b",
+    "prompt_id": "temp_5",
+    "prompt": "Write a one sentence motivational quote.",
+    "temperature": 0.7,
+    "responses": [
+      "\"With hard work, dedication and perseverance, anything is possible.\"",
+      "\"Your unique personality is what makes you stand out and make an impact.\"",
+      "Be the change you wish to see in the world."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_1",
+    "prompt": "Write a one sentence tagline for a coffee shop.",
+    "temperature": 0.0,
+    "responses": [
+      "\"Sip and savor, where every cup of coffee tells your story.\"",
+      "\"Sip on serenity at Beans & Bliss - the cozy nook where your soul and java meet.\"",
+      "\"Indulge in the rich flavors of our artisanal coffees and cozy atmosphere \u2013 your home away from home!\""
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_2",
+    "prompt": "Explain what gravity is in one sentence.",
+    "temperature": 0.0,
+    "responses": [
+      "Gravity is a natural phenomenon by which all things with mass or energy are drawn toward each other.",
+      "Gravity is a natural phenomenon by which all things with mass or energy are drawn towards each other, most commonly manifesting as the force that gives weight to physical objects and causes them to fall toward the ground when dropped.",
+      "Gravity is a natural force that attracts two objects toward each other, with the more massive object pulling the lesser mass towards it."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_3",
+    "prompt": "Write a one sentence description of the color blue.",
+    "temperature": 0.0,
+    "responses": [
+      "Blue is a primary color often associated with calmness, depth, and stability, frequently used to evoke emotions ranging from sadness to serenity across various art forms.",
+      "Blue is a cool, calming secondary color on the visible spectrum that often symbolizes tranquility and stability.",
+      "Blue is a cool, calming secondary color that often represents depth and stability, created by mixing two primary colors, red and green."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_4",
+    "prompt": "What is the capital of France? Answer in one sentence.",
+    "temperature": 0.0,
+    "responses": [
+      "The capital of France is Paris.",
+      "The capital of France is Paris.",
+      "Paris."
+    ],
+    "unique_response_count": 2,
+    "is_deterministic": false
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_5",
+    "prompt": "Write a one sentence motivational quote.",
+    "temperature": 0.0,
+    "responses": [
+      "\"Believe in yourself and all that you are. Know that there is something inside that glows like music, that was here from the beginning of time - this thing called a soul.\" \u2013 Marianne Williamson",
+      "\"Believe in yourself and all that you are, for within you is greater power than you think.\" -Nietzsche (with added context) \"You have the strength to accomplish your dreams; harness it now!\"  \n\nor simply: Believe in yourself! Your potential knows no bounds.",
+      "\"Believe in yourself, stay positive and hard work will bring success.\" - Unknown Person"
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_1",
+    "prompt": "Write a one sentence tagline for a coffee shop.",
+    "temperature": 0.7,
+    "responses": [
+      "\"Sip your way to serenity at Java Haven, where every cup of coffee is an invitation to pause and enjoy life's simple pleasures.\"",
+      "\"Experience the perfect blend of taste and comfort at Bean Haven Coffee Shop.\"",
+      "\"Savor the rich blend of flavors at Brew Haven Coffee Shop, where every cup is crafted with love and locally-sourced beans.\""
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_2",
+    "prompt": "Explain what gravity is in one sentence.",
+    "temperature": 0.7,
+    "responses": [
+      "Gravity is a natural force that attracts two bodies towards each other, proportional to their masses and inversely proportional to the square of their distance apart.",
+      "Gravity is a force by which a planet or other body draws objects toward its center.",
+      "Gravity is a natural force by which all things with mass or energy are attracted to each other."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_3",
+    "prompt": "Write a one sentence description of the color blue.",
+    "temperature": 0.7,
+    "responses": [
+      "The color blue is often associated with calmness, stability and depth, typically representing both masculinity and serenity in various cultures.",
+      "Blue is a cool, calming hue often associated with depth and stability that evokes the sky and sea.",
+      "Blue is a cool, calming primary color often associated with depth and stability, symbolizing trust, loyalty, wisdom, and intelligence."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_4",
+    "prompt": "What is the capital of France? Answer in one sentence.",
+    "temperature": 0.7,
+    "responses": [
+      "The capital of France is Paris.",
+      "The capital of France is Paris.",
+      "The capital of France is Paris."
+    ],
+    "unique_response_count": 1,
+    "is_deterministic": true
+  },
+  {
+    "model": "phi3:mini",
+    "prompt_id": "temp_5",
+    "prompt": "Write a one sentence motivational quote.",
+    "temperature": 0.7,
+    "responses": [
+      "\"Believe in yourself and all that you are. Know that there is something inside of you that can carry you through any situation.\" -Bruce Lee, as his legacy was not just about martial arts but also personal empowerment and confidence which resonates well with a motivational quote aimed to inspire self-belief and inner strength in others.",
+      "\"Believe in yourself, and you can conquer any mountain.\" - Unknown",
+      "\"Believe you can and you're halfway there.\" - Theodore Roosevelt"
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_1",
+    "prompt": "Write a one sentence tagline for a coffee shop.",
+    "temperature": 0.0,
+    "responses": [
+      "\"Savor the aroma, taste the magic - experience our coffee every day.\"",
+      "\"Savor the flavor in every sip at our cozy coffee shop.\"",
+      "\"Savor the aroma, taste the passion - Experience our specialty coffee every sip.\""
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_2",
+    "prompt": "Explain what gravity is in one sentence.",
+    "temperature": 0.0,
+    "responses": [
+      "Gravity is the force by which a planet or other body draws objects toward its center, holding them in place and keeping them from drifting off into space.",
+      "Gravity is a fundamental force of nature that attracts two bodies towards each other, specifically as a result of their mass, with the strength of the attraction depending on the distance between them and the masses involved.",
+      "Gravity is the force that attracts two objects toward each other, specifically as a result of the mass they possess, and is what keeps planets in orbit around stars."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_3",
+    "prompt": "Write a one sentence description of the color blue.",
+    "temperature": 0.0,
+    "responses": [
+      "Blue is a cool, calming and often serene color that ranges from light sky-like hues to deep, dark ocean tones.",
+      "Blue is a cool, calming color often associated with the sky and sea, appearing as a light shade with hints of warmth or depth as it darkens.",
+      "Blue is a cool, calming and serene primary color often associated with the sky and the sea, appearing as a light to medium shade with hints of warmth or depth."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_4",
+    "prompt": "What is the capital of France? Answer in one sentence.",
+    "temperature": 0.0,
+    "responses": [
+      "The capital city of France is Paris.",
+      "The capital city of France is Paris.",
+      "The capital city of France is Paris."
+    ],
+    "unique_response_count": 1,
+    "is_deterministic": true
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_5",
+    "prompt": "Write a one sentence motivational quote.",
+    "temperature": 0.0,
+    "responses": [
+      "\"Believe in yourself and all that you are, for inside you lies the strength and courage to accomplish everything you dream of.\"",
+      "\"Believe in yourself and all that you are, for inside you lies the strength and courage to accomplish everything you dream of.\"",
+      "\"Believe in yourself, take on your challenges, dig deep within yourself to conquer fears. Never let anyone bring you down. You got this.\""
+    ],
+    "unique_response_count": 2,
+    "is_deterministic": false
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_1",
+    "prompt": "Write a one sentence tagline for a coffee shop.",
+    "temperature": 0.7,
+    "responses": [
+      "\"Savor the aroma, taste the passion - indulge in every sip at our coffee shop.\"",
+      "\"Savor the aroma, taste the passion - Welcome to our coffee shop!\"",
+      "\"Savor the aroma, taste the perfection - welcome to our coffee shop!\""
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_2",
+    "prompt": "Explain what gravity is in one sentence.",
+    "temperature": 0.7,
+    "responses": [
+      "Gravity is the force by which a planet or other body draws objects toward its center, causing them to orbit or fall, and is responsible for the structure and behavior of galaxies and the universe at large.",
+      "Gravity is the force by which a planet or other body draws objects toward its center, caused by the mass and energy of the body.",
+      "Gravity is the force that attracts two bodies toward each other, specifically as a result of their masses and the distance separating them."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_3",
+    "prompt": "Write a one sentence description of the color blue.",
+    "temperature": 0.7,
+    "responses": [
+      "Blue is a cool and calming color often associated with the sky and sea, appearing as a shade that ranges from light baby blue to dark navy blue.",
+      "Blue is a cool, calming color often associated with the sky and sea, evoking feelings of tranquility and stability.",
+      "Blue is a cool, calming, and serene color that often represents trustworthiness, intelligence, and stability."
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_4",
+    "prompt": "What is the capital of France? Answer in one sentence.",
+    "temperature": 0.7,
+    "responses": [
+      "The capital city of France is Paris.",
+      "The capital city of France is Paris.",
+      "The capital city of France is Paris."
+    ],
+    "unique_response_count": 1,
+    "is_deterministic": true
+  },
+  {
+    "model": "mistral:7b-instruct-q4_0",
+    "prompt_id": "temp_5",
+    "prompt": "Write a one sentence motivational quote.",
+    "temperature": 0.7,
+    "responses": [
+      "\"Believe in yourself and all that you are, for inside you lies the strength and courage to accomplish everything you dream of.\"",
+      "\"Believe in yourself, take on your challenges, dig deep within yourself to conquer fears. Never let anyone bring you down. You got this.\"",
+      "\"Believe in yourself and all that you are. Know that there is something inside you that is greater than any obstacle.\""
+    ],
+    "unique_response_count": 3,
+    "is_deterministic": false
+  }
+]
