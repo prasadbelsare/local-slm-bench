@@ -29,7 +29,7 @@ def get_system_ram() -> dict:
     }
 
 async def measure_model_memory(model: str) -> dict:
-    print(f"\n--- Measuring: {model} ---")
+    print(f"\nMeasuring: {model}")
     results = []
 
     for prompt in MEMORY_MEASUREMENT_PROMPTS:
@@ -67,7 +67,7 @@ async def measure_model_memory(model: str) -> dict:
     return results
 
 async def run_memory_experiment():
-    print("\n=== Memory Usage Experiment ===")
+    print("\n Memory Usage Experiment ")
     print(f"Models: {AVAILABLE_MODELS}")
     print(f"Prompts per model: {len(MEMORY_MEASUREMENT_PROMPTS)}")
 
@@ -82,7 +82,7 @@ async def run_memory_experiment():
         model_results = await measure_model_memory(model)
         all_results.extend(model_results)
 
-    print("\n=== Memory Summary ===")
+    print("\n Memory Summary ")
     for model in AVAILABLE_MODELS:
         model_data = [r for r in all_results if r["model"] == model]
         avg_ollama_mb = round(

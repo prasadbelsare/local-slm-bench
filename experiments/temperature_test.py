@@ -8,7 +8,7 @@ from api.constants import AVAILABLE_MODELS, TEMPERATURE_PROMPTS, TEMPERATURES, R
 RESULTS_DIR = "experiments/results"
 
 async def run_temperature_experiment():
-    print("\n=== Temperature Experiment ===")
+    print("\n Temperature Experiment ")
     print(f"Prompts: {len(TEMPERATURE_PROMPTS)}")
     print(f"Temperatures: {TEMPERATURES}")
     print(f"Runs per temp: {RUNS_PER_TEMP}")
@@ -17,7 +17,7 @@ async def run_temperature_experiment():
     all_results = []
 
     for model in AVAILABLE_MODELS:
-        print(f"\n--- Model: {model} ---")
+        print(f"\nModel: {model}")
         for temp in TEMPERATURES:
             print(f"\n  Temperature: {temp}")
             for prompt_obj in TEMPERATURE_PROMPTS:
@@ -56,10 +56,10 @@ async def run_temperature_experiment():
     with open(filename, "w") as f:
         json.dump(all_results, f, indent=2)
 
-    print(f"\n=== Experiment Complete ===")
+    print(f"\n Experiment Complete ")
     print(f"Results saved to: {filename}")
 
-    print("\n=== Summary ===")
+    print("\n Summary ")
     for model in AVAILABLE_MODELS:
         print(f"\n{model}:")
         for temp in TEMPERATURES:

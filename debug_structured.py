@@ -18,7 +18,7 @@ async def debug():
             }
         )
         data = response.json()
-        print("=== RAW RESPONSE ===")
+        print("RESPONSE")
         print(repr(data["response"]))
 
 asyncio.run(debug())
